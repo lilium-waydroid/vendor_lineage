@@ -18,9 +18,18 @@ ifndef LINEAGE_BUILDTYPE
 endif
 
 # Filter out random types, so it'll reset to UNOFFICIAL
-ifeq ($(filter RELEASE NIGHTLY SNAPSHOT EXPERIMENTAL,$(LINEAGE_BUILDTYPE)),)
+ifeq ($(filter RELEASE NIGHTLY SNAPSHOT EXPERIMENTAL VANILLA FOSS GAPPS,$(LINEAGE_BUILDTYPE)),)
     LINEAGE_BUILDTYPE := UNOFFICIAL
     LINEAGE_EXTRAVERSION :=
+endif
+
+ifeq ($(LINEAGE_BUILDTYPE), GAPPS)
+    WITH_GMS := true
+    WITH_GMS_MINIMAL := true
+endif
+
+ifeq ($(LINEAGE_BUILDTYPE), FOSS)
+    $(call inherit-product-if-exists, vendor/foss/foss.mk)
 endif
 
 ifeq ($(LINEAGE_BUILDTYPE), UNOFFICIAL)
